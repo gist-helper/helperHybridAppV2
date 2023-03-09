@@ -16,7 +16,7 @@
         :key="mealData.dayType"
       >
         <q-scroll-area class="fit">
-          <MealShow :mealData="mealData" :langType="1"></MealShow>
+          <MealShow :mealData="mealData" :bldgType="2" :langType="1"></MealShow>
         </q-scroll-area>
       </q-carousel-slide>
     </q-carousel>

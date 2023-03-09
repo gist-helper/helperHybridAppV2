@@ -25,9 +25,9 @@
             >Student Bldg. 2</q-route-tab
           >
           <q-route-tab no-caps to="/bldg1kor" exact>제 1학생회관</q-route-tab>
-          <!--<q-route-tab no-caps to="/bldg1eng" exact
+          <q-route-tab no-caps to="/bldg1eng" exact
             >Student Bldg. 1</q-route-tab
-          >-->
+          >
         </q-tabs>
       </q-toolbar>
     </q-footer>
@@ -40,11 +40,23 @@ import EssentialLink from "components/EssentialLink.vue";
 
 const linksList = [
   {
-    title: "Kakao Channel",
-    caption: "GIST_Helper Chatbot",
+    title: "식단표 카카오톡 채널",
+    caption: "Kakao Chatbot",
     icon: "record_voice_over",
     link: "https://pf.kakao.com/_dxcBxlb",
   },
+  //{
+  //  title: "제 1학생회관 위치",
+  //  caption: "Student Building 1 Location",
+  //  icon: "apartment",
+  //  link: "https://www.gist.ac.kr/cyber/",
+  //},
+  //{
+  //  title: "제 2학생회관 위치",
+  //  caption: "Student Building 2 Location",
+  //  icon: "apartment",
+  //  link: "https://pf.kakao.com/_dxcBxlb",
+  //},
 ];
 
 export default defineComponent({

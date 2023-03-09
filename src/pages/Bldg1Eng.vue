@@ -8,13 +8,16 @@
       :navigation="navigation"
       control-color="black"
       class="bg-amber-2 text-black"
+      style="height: 100vh"
     >
       <q-carousel-slide
         :name="mealData.dayType"
         v-for="mealData in mealDataList"
         :key="mealData.dayType"
       >
-        <MealShow :mealData="mealData"></MealShow>
+        <q-scroll-area class="fit">
+          <MealShow :mealData="mealData" :bldgType="1" :langType="1"></MealShow>
+        </q-scroll-area>
       </q-carousel-slide>
     </q-carousel>
   </q-page>
@@ -33,31 +36,55 @@ export default defineComponent({
   setup() {
     var slide = ref(0);
     var mealDataList = ref([]);
-    var dayDate = ref(["월", "화", "수", "목", "금", "토", "일"]);
+    var dayDate = ref(["Mon", "Tue", "Wed", "Thr", "Fri", "Sat", "Sun"]);
+    var options = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    };
 
     function initMealData() {
+      var tempDate2 = new Date(Date.now());
+      var day = tempDate2.getDay();
+      day -= 1;
+      if (day < 0) {
+        day += 7;
+      }
+      slide.value = day;
       for (var i = 0; i < 7; i++) {
+        var tempDate = new Date(Date.now());
+        tempDate.setDate(tempDate.getDate() + i);
+        var y = tempDate.getFullYear().toString();
+        var m = (tempDate.getMonth() + 1).toString();
+        var d = tempDate.getDate().toString();
+        var dd = tempDate.getDay();
+        dd -= 1;
+        if (dd < 0) {
+          dd += 7;
+        }
         mealDataList.value.push({
           sortKey: i,
-          dayType: i,
-          currentTime: "00월 00일 (" + dayDate.value[i] + ")",
-          breakfast: "아직 식단이 준비되지 않았습니다.\n",
-          lunch: "아직 식단이 준비되지 않았습니다.\n",
-          lunch_corner: "아직 식단이 준비되지 않았습니다.\n",
-          dinner: "아직 식단이 준비되지 않았습니다.\n",
+          dayType: dd,
+          currentTime: tempDate.toDateString("en-US", options),
+          breakfast: "The meal is being prepared.\n",
+          lunch: "The meal is being prepared.\n",
+          lunch_corner: "The meal is being prepared.\n",
+          lunch_2nd: "The meal is being prepared.\n",
+          dinner: "The meal is being prepared.\n",
         });
       }
       //console.log(mealDataList.value);
     }
 
-    async function getReqeust(tempDay, day) {
+    async function getReqeust(tempDay) {
       var date = new Date(Date.now());
-      date.setDate(date.getDate() + tempDay - day);
+      date.setDate(date.getDate() + tempDay);
       var y = date.getFullYear().toString();
       var m = (date.getMonth() + 1).toString();
       var d = date.getDate();
-      var query = "/meals/date/" + y + "/" + m + "/" + d + "/2/0";
-      console.log(query);
+      var query = "/meals/date/" + y + "/" + m + "/" + d + "/1/1";
+      //console.log(query);
       await api
         .get(query)
         .then((response) => {
@@ -71,27 +98,48 @@ export default defineComponent({
           if (dd < 0) {
             dd += 7;
           }
-          console.log(query.split("/")[5]);
+          //console.log(query.split("/")[5]);
           mealDataList.value.push({
-            sortKey: query.split("/")[5],
+            sortKey: tempDate,
             dayType: dd,
-            currentTime: m + "월 " + d + "일 " + "(" + dayDate.value[dd] + ")",
+            currentTime: tempDate.toDateString("en-US", options),
             breakfast: response.data.breakfast,
             lunch: response.data.lunch,
             lunch_corner: response.data.lunch_corner,
+            lunch_2nd: response.data.lunch_bldg1_2,
             dinner: response.data.dinner,
           });
           mealDataList.value.sort((a, b) => {
             return a.sortKey < b.sortKey;
           });
-          console.log(mealDataList.value);
+          //console.log(mealDataList.value);
         })
         .catch((error) => {
-          console.log(error);
-          mealDataList.value = [];
-          if (mealDataList.value.length == 0) {
-            initMealData();
+          //console.log(error);
+          var tempDate = new Date(Date.now());
+          tempDate.setDate(tempDate.getDate() + mealDataList.value.length);
+          var y = tempDate.getFullYear().toString();
+          var m = (tempDate.getMonth() + 1).toString();
+          var d = tempDate.getDate().toString();
+          var dd = tempDate.getDay();
+          dd -= 1;
+          if (dd < 0) {
+            dd += 7;
           }
+          //console.log(query.split("/")[5]);
+          mealDataList.value.push({
+            sortKey: tempDate,
+            dayType: dd,
+            currentTime: tempDate.toDateString("en-US", options),
+            breakfast: "The meal is being prepared.\n",
+            lunch: "The meal is being prepared..\n",
+            lunch_corner: "The meal is being prepared.\n",
+            lunch_2nd: "The meal is being prepared.\n",
+            dinner: "The meal is being prepared.\n",
+          });
+          mealDataList.value.sort((a, b) => {
+            return a.sortKey < b.sortKey;
+          });
         });
     }
 
@@ -112,8 +160,12 @@ export default defineComponent({
       }
       mealDataList.value = [];
       slide.value = day;
-      for (var tempDay = day; tempDay < 7; tempDay++) {
-        await getReqeust(tempDay, day);
+      var num_of_left = 7 - day;
+      if (num_of_left == 1) {
+        num_of_left = 7;
+      }
+      for (var tempDay = 0; tempDay < num_of_left; tempDay++) {
+        await getReqeust(tempDay);
       }
     });
     return {

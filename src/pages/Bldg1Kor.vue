@@ -16,7 +16,7 @@
         :key="mealData.dayType"
       >
         <q-scroll-area class="fit">
-          <MealShow :mealData="mealData" :langType="0"></MealShow>
+          <MealShow :mealData="mealData" :bldgType="1" :langType="0"></MealShow>
         </q-scroll-area>
       </q-carousel-slide>
     </q-carousel>
@@ -64,6 +64,7 @@ export default defineComponent({
           breakfast: "아직 식단이 준비되지 않았습니다.\n",
           lunch: "아직 식단이 준비되지 않았습니다.\n",
           lunch_corner: "아직 식단이 준비되지 않았습니다.\n",
+          lunch_2nd: "아직 식단이 준비되지 않았습니다.\n",
           dinner: "아직 식단이 준비되지 않았습니다.\n",
         });
       }
@@ -100,6 +101,7 @@ export default defineComponent({
             breakfast: response.data.breakfast,
             lunch: response.data.lunch,
             lunch_corner: response.data.lunch_corner,
+            lunch_2nd: response.data.lunch_bldg1_2,
             dinner: response.data.dinner,
           });
           mealDataList.value.sort((a, b) => {
@@ -128,6 +130,7 @@ export default defineComponent({
             breakfast: "아직 식단이 준비되지 않았습니다.\n",
             lunch: "아직 식단이 준비되지 않았습니다.\n",
             lunch_corner: "아직 식단이 준비되지 않았습니다.\n",
+            lunch_2nd: "아직 식단이 준비되지 않았습니다.\n",
             dinner: "아직 식단이 준비되지 않았습니다.\n",
           });
           mealDataList.value.sort((a, b) => {
