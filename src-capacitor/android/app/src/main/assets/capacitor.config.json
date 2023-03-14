@@ -1,7 +1,7 @@
 {
-  "appId": "gist.helper.android",
-  "appName": "밥인지",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www"
+	"appId": "gist.helper.android",
+	"appName": "GIST_Helper_Android",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"webDir": "www"
 }
