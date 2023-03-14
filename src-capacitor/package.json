@@ -5,8 +5,8 @@
   "author": "HoyoenKim <cabinkhy@gist.ac.kr>",
   "private": true,
   "dependencies": {
-    "@capacitor/android": "^2.5.0",
-    "@capacitor/cli": "^2.0.0",
-    "@capacitor/core": "^2.0.0"
+    "@capacitor/android": "^4.7.0",
+    "@capacitor/cli": "^4.7.0",
+    "@capacitor/core": "^4.7.0"
   }
 }
